@@ -49,7 +49,7 @@ def load_dataset(dataset_name, dataset_indexes, ratio, train_state, seed):
     for i, dataset_index in enumerate(dataset_indexes):
         filename = f'./dataset/{dataset_name}/{dataset_index}.h5'
         with h5py.File(filename, 'r') as f:
-            x = f['X'][:]
+            x = np.asarray(f['X'][:], dtype=np.float32)  # 内存减半，防 float64 内存溢出
             y = f['Y'][:]
         x = power_normalization_new(x)
         if train_state:
